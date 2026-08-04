@@ -1,0 +1,15 @@
+app:
+  name: adapter-n8n
+  image:
+    repository: "onecx/onecx-human-task-adapter-n8n"
+  operator:
+    keycloak:
+      client:
+        enabled: true
+        spec:
+          kcConfig:
+            defaultClientScopes: [ ocx-ht:all ]
+    microservice:
+      spec:
+        description: "OneCX Human Task n8n adapter"
+        name: "onecx-human-task-adapter-n8n"

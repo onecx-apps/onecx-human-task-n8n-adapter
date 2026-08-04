@@ -1,0 +1,164 @@
+openapi: 3.0.3
+info:
+  title: onecx-human-task adapter API V1
+  description: Unified API implemented by provider adapters (eg. Camunda, n8n), invoked by the Human Task Service to accept or decline tasks in the provider workflow.
+  version: 1.0.0
+
+servers:
+  - url: http://onecx-human-task-camunda-adapter:8080
+  - url: http://onecx-human-task-adapter-n8n:8080
+
+tags:
+  - name: tasks
+    description: Managing human tasks in provider workflows
+
+paths:
+  /v1/tasks/accept:
+    post:
+      security:
+        - oauth2: [ ocx-ht:all, ocx-ht:write ]
+      tags:
+        - tasks
+      description: Accept a task in the provider workflow
+      operationId: acceptTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptTaskRequest'
+      responses:
+        204:
+          description: Task accepted successfully
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+        404:
+          description: Task not found in provider workflow
+
+  /v1/tasks/decline:
+    post:
+      security:
+        - oauth2: [ ocx-ht:all, ocx-ht:write ]
+      tags:
+        - tasks
+      description: Decline a task in the provider workflow
+      operationId: declineTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeclineTaskRequest'
+      responses:
+        204:
+          description: Task declined successfully
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+        404:
+          description: Task not found in provider workflow
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.simple.api/token
+          scopes:
+            "ocx-ht:all": Grants access to all operations
+            "ocx-ht:read": Grants read access
+            "ocx-ht:write": Grants write access
+            "ocx-ht:delete": Grants access to delete operations
+
+  schemas:
+    AcceptTaskRequest:
+      required:
+        - providerType
+        - providerTaskId
+        - providerURL
+      type: object
+      properties:
+        providerType:
+          $ref: '#/components/schemas/ProviderType'
+        providerTaskId:
+          type: string
+          maxLength: 255
+          description: The task ID in the external provider system.
+        providerURL:
+          type: string
+          maxLength: 255
+          description: URL of the specific provider instance (eg. an n8n or Camunda installation) to act on.
+        customInput:
+          type: object
+          additionalProperties:
+            type: string
+          description: Arbitrary key-value pairs provided by the user with the accept action, forwarded to the provider.
+
+    DeclineTaskRequest:
+      required:
+        - providerType
+        - providerTaskId
+        - providerURL
+      type: object
+      properties:
+        providerType:
+          $ref: '#/components/schemas/ProviderType'
+        providerTaskId:
+          type: string
+          maxLength: 255
+          description: The task ID in the external provider system.
+        providerURL:
+          type: string
+          maxLength: 255
+          description: URL of the specific provider instance (eg. an n8n or Camunda installation) to act on.
+        customInput:
+          type: object
+          additionalProperties:
+            type: string
+          description: Arbitrary key-value pairs provided by the user with the decline action, forwarded to the provider.
+
+    ProviderType:
+      type: string
+      enum:
+        - CAMUNDA
+        - N8N
+
+    ProblemDetailResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        detail:
+          type: string
+        params:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailParam'
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailInvalidParam'
+
+    ProblemDetailParam:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+
+    ProblemDetailInvalidParam:
+      type: object
+      properties:
+        name:
+          type: string
+        message:
+          type: string

@@ -1,0 +1,53 @@
+
+include::onecx-human-task-adapter-n8n-attributes.adoc[opts=optional]
+
+{docker-registry}[Link to Docker registry]
+
+== Default properties
+
+.{properties-file}
+[%collapsible]
+====
+[source,properties,subs=attributes+]
+----
+quarkus.banner.enabled=false
+quarkus.http.auth.permission.health.paths=/q/*
+quarkus.http.auth.permission.health.policy=permit
+quarkus.http.auth.permission.default.paths=/*
+quarkus.http.auth.permission.default.policy=authenticated
+quarkus.rest-client.n8n.url=${N8N_URL:http://n8n:5678}
+%prod.quarkus.oidc-client.client-id=${quarkus.application.name}
+----
+====
+
+== Extensions
+.Extensions List
+[%collapsible]
+====
+include::onecx-human-task-adapter-n8n-extensions.adoc[opts=optional]
+====
+
+== Helm
+
+{helm-registry}[Link to Helm registry]
+
+.Default values in {helm-file}
+[source,yaml]
+----
+app:
+  name: adapter
+  image:
+    repository: "onecx/onecx-human-task-adapter-n8n"
+  operator:
+    keycloak:
+      client:
+        enabled: true
+        spec:
+          kcConfig:
+            defaultClientScopes: [ ocx-ht:read, ocx-ht:write ]
+    microservice:
+      spec:
+        description: "OneCX n8n adapter"
+        name: "onecx-human-task-adapter-n8n"
+
+----
