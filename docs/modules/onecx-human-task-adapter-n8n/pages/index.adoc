@@ -1,7 +1,0 @@
-include::onecx-human-task-adapter-n8n-attributes.adoc[opts=optional]
-
-= onecx-human-task-adapter-n8n
-
-
-
-include::onecx-human-task-adapter-n8n-docs.adoc[opts=optional]

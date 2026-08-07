@@ -9,11 +9,11 @@
         <version>3.3.0</version>
     </parent>
 
-    <artifactId>onecx-human-task-adapter-n8n</artifactId>
+    <artifactId>onecx-human-task-n8n-adapter</artifactId>
     <version>999-SNAPSHOT</version>
     <packaging>quarkus</packaging>
 
-    <name>onecx-human-task-adapter-n8n</name>
+    <name>onecx-human-task-n8n-adapter</name>
     <description>OneCX Human Task n8n Adapter</description>
 
     <dependencies>
@@ -51,6 +51,10 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-client-jackson</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -115,6 +119,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>io.quarkiverse.mockserver</groupId>
+            <artifactId>quarkus-mockserver</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkiverse.mockserver</groupId>
+            <artifactId>quarkus-mockserver-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.tkit.quarkus.lib</groupId>
             <artifactId>tkit-quarkus-security-test</artifactId>
             <scope>test</scope>
@@ -123,6 +137,25 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>human-task-svc-internal</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <uri>https://raw.githubusercontent.com/onecx-apps/onecx-human-task-svc/main/src/main/openapi/onecx-human-task-adapter.yaml</uri>
+                            <outputDirectory>target/tmp/openapi</outputDirectory>
+                            <outputFileName>onecx-human-task-adapter.yaml</outputFileName>
+                            <skipCache>true</skipCache>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -160,17 +193,16 @@
 
                 <executions>
                     <execution>
-                        <id>adapter-v1</id>
+                        <id>adapter</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <!-- Temporary, TODO should be replaced with API download from SVC -->
-                            <inputSpec>src/main/openapi/onecx-human-task-adapter-v1.yaml</inputSpec>
-                            <apiPackage>gen.org.tkit.onecx.human.task.adapter.rs.v1</apiPackage>
-                            <modelPackage>gen.org.tkit.onecx.human.task.adapter.rs.v1.model</modelPackage>
-                            <modelNameSuffix>DTOV1</modelNameSuffix>
-                            <apiNameSuffix>V1Api</apiNameSuffix>
+                            <inputSpec>target/tmp/openapi/onecx-human-task-adapter.yaml</inputSpec>
+                            <apiPackage>gen.org.tkit.onecx.human.task.adapter.rs.internal</apiPackage>
+                            <modelPackage>gen.org.tkit.onecx.human.task.adapter.rs.internal.model</modelPackage>
+                            <modelNameSuffix>AdapterDTO</modelNameSuffix>
+                            <apiNameSuffix>AdapterApi</apiNameSuffix>
                         </configuration>
                     </execution>
                 </executions>

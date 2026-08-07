@@ -1,3 +1,3 @@
-# onecx-human-task-adapter-n8n
+# onecx-human-task-n8n-adapter
 
 OneCX Human Task n8n provider adapter.

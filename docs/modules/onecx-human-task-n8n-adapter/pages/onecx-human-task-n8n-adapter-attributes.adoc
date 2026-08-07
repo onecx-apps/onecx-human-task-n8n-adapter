@@ -1,0 +1,5 @@
+
+:docker-registry: https://github.com/onecx/onecx-human-task-n8n-adapter/pkgs/container/onecx-human-task-n8n-adapter
+:helm-registry: https://github.com/onecx/onecx-human-task-n8n-adapter/pkgs/container/charts%2Fonecx-human-task-n8n-adapter
+:properties-file: src/main/resources/application.properties
+:helm-file: src/main/helm/values.yaml
