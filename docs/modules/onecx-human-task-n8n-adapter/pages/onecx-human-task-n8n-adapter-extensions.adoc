@@ -1,5 +1,5 @@
 
-include::onecx-human-task-adapter-n8n-attributes.adoc[opts=optional]
+include::onecx-human-task-n8n-adapter-attributes.adoc[opts=optional]
 
 [.extension.table.searchable, cols="50,.^15,.^15,.^20"]
 |===
@@ -53,6 +53,12 @@ h| Version
 | quarkus-rest-jackson
 
 | https://quarkus.io/guides/rest-json[Link]
+| 
+| 3.33.3
+
+| quarkus-rest-client-jackson
+
+| https://quarkus.io/guides/rest-client[Link]
 | 
 | 3.33.3
 

@@ -1,7 +1,7 @@
 app:
-  name: adapter-n8n
+  name: n8n-adapter
   image:
-    repository: "onecx/onecx-human-task-adapter-n8n"
+    repository: "onecx/onecx-human-task-n8n-adapter"
   operator:
     keycloak:
       client:
@@ -12,4 +12,4 @@ app:
     microservice:
       spec:
         description: "OneCX Human Task n8n adapter"
-        name: "onecx-human-task-adapter-n8n"
+        name: "onecx-human-task-n8n-adapter"

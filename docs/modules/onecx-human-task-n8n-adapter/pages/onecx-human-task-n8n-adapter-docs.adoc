@@ -1,5 +1,5 @@
 
-include::onecx-human-task-adapter-n8n-attributes.adoc[opts=optional]
+include::onecx-human-task-n8n-adapter-attributes.adoc[opts=optional]
 
 {docker-registry}[Link to Docker registry]
 
@@ -15,8 +15,11 @@ quarkus.http.auth.permission.health.paths=/q/*
 quarkus.http.auth.permission.health.policy=permit
 quarkus.http.auth.permission.default.paths=/*
 quarkus.http.auth.permission.default.policy=authenticated
-quarkus.rest-client.n8n.url=${N8N_URL:http://n8n:5678}
-%prod.quarkus.oidc-client.client-id=${quarkus.application.name}
+quarkus.hibernate-orm.multitenant=DISCRIMINATOR
+tkit.rs.context.tenant-id.enabled=true
+tkit.rs.context.token.header-param=apm-principal-token
+onecx.ht.adapter.n8n.base-url=${N8N_URL:http://localhost:5678}
+quarkus.rest-client.n8n.url=${onecx.ht.adapter.n8n.base-url}
 ----
 ====
 
@@ -24,7 +27,7 @@ quarkus.rest-client.n8n.url=${N8N_URL:http://n8n:5678}
 .Extensions List
 [%collapsible]
 ====
-include::onecx-human-task-adapter-n8n-extensions.adoc[opts=optional]
+include::onecx-human-task-n8n-adapter-extensions.adoc[opts=optional]
 ====
 
 == Helm
@@ -35,19 +38,19 @@ include::onecx-human-task-adapter-n8n-extensions.adoc[opts=optional]
 [source,yaml]
 ----
 app:
-  name: adapter
+  name: n8n-adapter
   image:
-    repository: "onecx/onecx-human-task-adapter-n8n"
+    repository: "onecx/onecx-human-task-n8n-adapter"
   operator:
     keycloak:
       client:
         enabled: true
         spec:
           kcConfig:
-            defaultClientScopes: [ ocx-ht:read, ocx-ht:write ]
+            defaultClientScopes: [ ocx-ht:all ]
     microservice:
       spec:
-        description: "OneCX n8n adapter"
-        name: "onecx-human-task-adapter-n8n"
+        description: "OneCX Human Task n8n adapter"
+        name: "onecx-human-task-n8n-adapter"
 
 ----

@@ -1,0 +1,32 @@
+[.configuration-legend]
+icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
+[.configuration-reference.searchable, cols="80,.^10,.^10"]
+|===
+
+h|[.header-title]##Configuration property##
+h|Type
+h|Default
+
+a| [[onecx-human-task-n8n-adapter_onecx-ht-adapter-n8n-base-url]] [.property-path]##link:#onecx-human-task-n8n-adapter_onecx-ht-adapter-n8n-base-url[`+++onecx.ht.adapter.n8n.base-url+++`]##
+ifdef::add-copy-button-to-config-props[]
+config_property_copy_button:+++onecx.ht.adapter.n8n.base-url+++[]
+endif::add-copy-button-to-config-props[]
+
+
+[.description]
+--
+Base URL of the n8n instance, used to validate providerURL
+
+
+ifdef::add-copy-button-to-env-var[]
+Environment variable: env_var_with_copy_button:+++ONECX_HT_ADAPTER_N8N_BASE_URL+++[]
+endif::add-copy-button-to-env-var[]
+ifndef::add-copy-button-to-env-var[]
+Environment variable: `+++ONECX_HT_ADAPTER_N8N_BASE_URL+++`
+endif::add-copy-button-to-env-var[]
+--
+|link:https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html[URI]
+|`+++http://localhost:5678+++`
+
+|===
+

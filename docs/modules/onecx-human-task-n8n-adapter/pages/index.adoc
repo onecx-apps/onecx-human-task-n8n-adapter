@@ -1,0 +1,9 @@
+include::onecx-human-task-n8n-adapter-attributes.adoc[opts=optional]
+
+= onecx-human-task-n8n-adapter
+
+
+== Configuration
+include::onecx-human-task-n8n-adapter.adoc[opts=optional]
+
+include::onecx-human-task-n8n-adapter-docs.adoc[opts=optional]
