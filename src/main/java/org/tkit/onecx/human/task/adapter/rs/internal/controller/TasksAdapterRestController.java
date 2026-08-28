@@ -7,6 +7,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -43,6 +45,9 @@ public class TasksAdapterRestController implements TasksAdapterApi {
     @RestClient
     N8nApi client;
 
+    @Context
+    HttpHeaders headers;
+
     @Override
     public Response acceptTask(ProcessTaskRequestAdapterDTO processTaskRequestAdapterDTO) {
         return response(processTaskRequestAdapterDTO.getProviderType(),
@@ -70,7 +75,7 @@ public class TasksAdapterRestController implements TasksAdapterApi {
             return exceptionMapper.providerException(Response.Status.BAD_REQUEST,
                     ExceptionMapper.ErrorKeys.INVALID_PROVIDER_URL.name(), ex.getMessage());
         }
-        try (var _ = client.callWebhook(providerURL, decision)) {
+        try (var _ = client.callWebhook(providerURL, headers.getHeaderString(HttpHeaders.AUTHORIZATION), decision)) {
             return Response.noContent().build();
         }
     }
