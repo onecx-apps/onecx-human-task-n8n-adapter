@@ -58,13 +58,15 @@ class TasksAdapterRestControllerTest extends AbstractTest {
     @Test
     void acceptTask() {
         mockN8n(Response.Status.OK.getStatusCode());
+        String keycloakToken = getKeycloakClientToken("testClient");
 
-        given().when().auth().oauth2(getKeycloakClientToken("testClient")).header(APM_HEADER_PARAM, createToken(TENANT))
+        given().when().auth().oauth2(keycloakToken).header(APM_HEADER_PARAM, createToken(TENANT))
                 .contentType(APPLICATION_JSON).body(createProcessTaskRequestDto()).post(ACCEPT_ENDPOINT).then()
                 .statusCode(NO_CONTENT.getStatusCode());
 
         mockServerClient.verify(HttpRequest.request().withMethod(HttpMethod.POST).withPath(N8N_WEBHOOK_PATH)
                 .withQueryStringParameter(N8N_WEBHOOK_QUERY_PARAM, N8N_WEBHOOK_QUERY_PARAM_VAL)
+                .withHeader("Authorization", "Bearer " + keycloakToken)
                 .withBody(JsonBody.json(decision(true, Map.of("ocx-key-1", "ocx-val-1")))));
     }
 
@@ -138,13 +140,15 @@ class TasksAdapterRestControllerTest extends AbstractTest {
     @Test
     void declineTask() {
         mockN8n(Response.Status.OK.getStatusCode());
+        String keycloakToken = getKeycloakClientToken("testClient");
 
-        given().when().auth().oauth2(getKeycloakClientToken("testClient")).header(APM_HEADER_PARAM, createToken(TENANT))
+        given().when().auth().oauth2(keycloakToken).header(APM_HEADER_PARAM, createToken(TENANT))
                 .contentType(APPLICATION_JSON).body(createProcessTaskRequestDto()).post(DECLINE_ENDPOINT).then()
                 .statusCode(NO_CONTENT.getStatusCode());
 
         mockServerClient.verify(HttpRequest.request().withMethod(HttpMethod.POST).withPath(N8N_WEBHOOK_PATH)
                 .withQueryStringParameter(N8N_WEBHOOK_QUERY_PARAM, N8N_WEBHOOK_QUERY_PARAM_VAL)
+                .withHeader("Authorization", "Bearer " + keycloakToken)
                 .withBody(JsonBody.json(decision(false, Map.of("ocx-key-1", "ocx-val-1")))));
     }
 
