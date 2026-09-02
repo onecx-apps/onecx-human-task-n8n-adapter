@@ -9,5 +9,6 @@ import lombok.Setter;
 @Setter
 public class N8nTaskDecisionRequest {
     private boolean accepted;
+    private String providerTaskId;
     private Map<String, String> customInput;
 }
