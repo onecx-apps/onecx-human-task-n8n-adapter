@@ -1,5 +1,6 @@
 package org.tkit.onecx.human.task.adapter.rs.internal.controller;
 
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.util.Objects;
 
@@ -95,5 +96,10 @@ public class TasksAdapterRestController implements TasksAdapterApi {
     @ServerExceptionMapper
     public Response restException(ClientWebApplicationException ex) {
         return exceptionMapper.clientException(ex);
+    }
+
+    @ServerExceptionMapper
+    public Response timeoutException(SocketTimeoutException ex) {
+        return exceptionMapper.timeoutException(ex);
     }
 }

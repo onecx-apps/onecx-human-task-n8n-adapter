@@ -35,6 +35,11 @@ public interface ExceptionMapper {
                 "n8n provider returned status " + ex.getResponse().getStatus());
     }
 
+    default Response timeoutException(Exception ex) {
+        return providerException(Response.Status.BAD_REQUEST, ErrorKeys.PROVIDER_TIMEOUT.name(),
+                "n8n provider did not answer in time");
+    }
+
     /**
      * Convenience method for building a ProblemDetailResponse
      */
@@ -63,6 +68,7 @@ public interface ExceptionMapper {
         CONSTRAINT_VIOLATIONS,
         INVALID_PROVIDER_TYPE,
         INVALID_PROVIDER_URL,
-        PROVIDER_ERROR
+        PROVIDER_ERROR,
+        PROVIDER_TIMEOUT
     }
 }

@@ -20,6 +20,8 @@ tkit.rs.context.tenant-id.enabled=true
 tkit.rs.context.token.header-param=apm-principal-token
 onecx.ht.adapter.n8n.base-url=${N8N_URL:http://localhost:5678}
 quarkus.rest-client.n8n.url=${onecx.ht.adapter.n8n.base-url}
+quarkus.rest-client.n8n.connect-timeout=10000
+quarkus.rest-client.n8n.read-timeout=60000
 ----
 ====
 
