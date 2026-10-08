@@ -3,7 +3,7 @@ name: onecx-human-task-n8n-adapter
 description: OneCX n8n adapter Helm chart
 type: application
 version: 0.0.0
-appVersion: "0.0.0"
+appVersion: 0.0.0
 keywords:
   - svc
 sources:
