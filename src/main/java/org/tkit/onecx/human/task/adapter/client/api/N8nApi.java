@@ -23,5 +23,5 @@ public interface N8nApi {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     Response callWebhook(@Url URI url, @HeaderParam(HttpHeaders.AUTHORIZATION) String authorization,
-            N8nTaskDecisionRequest decisionRequest);
+            @HeaderParam("apm-principal-token") String apmPrincipalToken, N8nTaskDecisionRequest decisionRequest);
 }
