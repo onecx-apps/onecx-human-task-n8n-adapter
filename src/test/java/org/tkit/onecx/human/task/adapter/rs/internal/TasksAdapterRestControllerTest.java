@@ -59,14 +59,16 @@ class TasksAdapterRestControllerTest extends AbstractTest {
     void acceptTask() {
         mockN8n(Response.Status.OK.getStatusCode());
         String keycloakToken = getKeycloakClientToken("testClient");
+        String apmPrincipalToken = createToken(TENANT);
 
-        given().when().auth().oauth2(keycloakToken).header(APM_HEADER_PARAM, createToken(TENANT))
+        given().when().auth().oauth2(keycloakToken).header(APM_HEADER_PARAM, apmPrincipalToken)
                 .contentType(APPLICATION_JSON).body(createProcessTaskRequestDto()).post(ACCEPT_ENDPOINT).then()
                 .statusCode(NO_CONTENT.getStatusCode());
 
         mockServerClient.verify(HttpRequest.request().withMethod(HttpMethod.POST).withPath(N8N_WEBHOOK_PATH)
                 .withQueryStringParameter(N8N_WEBHOOK_QUERY_PARAM, N8N_WEBHOOK_QUERY_PARAM_VAL)
                 .withHeader("Authorization", "Bearer " + keycloakToken)
+                .withHeader(APM_HEADER_PARAM, apmPrincipalToken)
                 .withBody(JsonBody.json(decision(true, Map.of("ocx-key-1", "ocx-val-1")))));
     }
 
@@ -141,14 +143,16 @@ class TasksAdapterRestControllerTest extends AbstractTest {
     void declineTask() {
         mockN8n(Response.Status.OK.getStatusCode());
         String keycloakToken = getKeycloakClientToken("testClient");
+        String apmPrincipalToken = createToken(TENANT);
 
-        given().when().auth().oauth2(keycloakToken).header(APM_HEADER_PARAM, createToken(TENANT))
+        given().when().auth().oauth2(keycloakToken).header(APM_HEADER_PARAM, apmPrincipalToken)
                 .contentType(APPLICATION_JSON).body(createProcessTaskRequestDto()).post(DECLINE_ENDPOINT).then()
                 .statusCode(NO_CONTENT.getStatusCode());
 
         mockServerClient.verify(HttpRequest.request().withMethod(HttpMethod.POST).withPath(N8N_WEBHOOK_PATH)
                 .withQueryStringParameter(N8N_WEBHOOK_QUERY_PARAM, N8N_WEBHOOK_QUERY_PARAM_VAL)
                 .withHeader("Authorization", "Bearer " + keycloakToken)
+                .withHeader(APM_HEADER_PARAM, apmPrincipalToken)
                 .withBody(JsonBody.json(decision(false, Map.of("ocx-key-1", "ocx-val-1")))));
     }
 
