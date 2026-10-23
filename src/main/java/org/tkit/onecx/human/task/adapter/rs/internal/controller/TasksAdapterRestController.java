@@ -76,8 +76,7 @@ public class TasksAdapterRestController implements TasksAdapterApi {
             return exceptionMapper.providerException(Response.Status.BAD_REQUEST,
                     ExceptionMapper.ErrorKeys.INVALID_PROVIDER_URL.name(), ex.getMessage());
         }
-        try (var _ = client.callWebhook(providerURL, headers.getHeaderString(HttpHeaders.AUTHORIZATION),
-                headers.getHeaderString("apm-principal-token"), decision)) {
+        try (var _ = client.callWebhook(providerURL, headers.getHeaderString("apm-principal-token"), decision)) {
             return Response.noContent().build();
         }
     }

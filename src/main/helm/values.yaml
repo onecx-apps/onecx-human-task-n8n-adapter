@@ -8,7 +8,7 @@ app:
         enabled: true
         spec:
           kcConfig:
-            defaultClientScopes: [ ocx-ht:all ]
+            defaultClientScopes: [ ocx-ev:all, ocx-ai:all, ocx-ht:write, ocx-mail:read, ocx-mail:write, ocx-tk:write ]
     microservice:
       spec:
         description: "OneCX Human Task n8n adapter"

@@ -22,6 +22,8 @@ onecx.ht.adapter.n8n.base-url=${N8N_URL:http://localhost:5678}
 quarkus.rest-client.n8n.url=${onecx.ht.adapter.n8n.base-url}
 quarkus.rest-client.n8n.connect-timeout=10000
 quarkus.rest-client.n8n.read-timeout=60000
+%prod.quarkus.oidc-client.client-id=${quarkus.application.name}
+%prod.quarkus.rest-client.n8n.providers=io.quarkus.oidc.client.reactive.filter.OidcClientRequestReactiveFilter
 ----
 ====
 
@@ -49,7 +51,7 @@ app:
         enabled: true
         spec:
           kcConfig:
-            defaultClientScopes: [ ocx-ht:all ]
+            defaultClientScopes: [ ocx-ev:all, ocx-ai:all, ocx-ht:write, ocx-mail:read, ocx-mail:write, ocx-tk:write ]
     microservice:
       spec:
         description: "OneCX Human Task n8n adapter"

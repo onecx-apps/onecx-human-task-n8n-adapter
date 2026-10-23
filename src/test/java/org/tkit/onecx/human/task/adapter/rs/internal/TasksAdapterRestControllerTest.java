@@ -20,6 +20,7 @@ import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.mockserver.model.JsonBody;
 import org.mockserver.model.MediaType;
+import org.mockserver.verify.VerificationTimes;
 import org.tkit.onecx.human.task.adapter.client.model.N8nTaskDecisionRequest;
 import org.tkit.onecx.human.task.adapter.rs.internal.controller.TasksAdapterRestController;
 import org.tkit.onecx.human.task.adapter.rs.internal.mappers.ExceptionMapper;
@@ -67,9 +68,10 @@ class TasksAdapterRestControllerTest extends AbstractTest {
 
         mockServerClient.verify(HttpRequest.request().withMethod(HttpMethod.POST).withPath(N8N_WEBHOOK_PATH)
                 .withQueryStringParameter(N8N_WEBHOOK_QUERY_PARAM, N8N_WEBHOOK_QUERY_PARAM_VAL)
-                .withHeader("Authorization", "Bearer " + keycloakToken)
                 .withHeader(APM_HEADER_PARAM, apmPrincipalToken)
                 .withBody(JsonBody.json(decision(true, Map.of("ocx-key-1", "ocx-val-1")))));
+        mockServerClient.verify(HttpRequest.request().withMethod(HttpMethod.POST).withPath(N8N_WEBHOOK_PATH)
+                .withHeader("Authorization", "Bearer " + keycloakToken), VerificationTimes.exactly(0));
     }
 
     @Test
@@ -151,9 +153,10 @@ class TasksAdapterRestControllerTest extends AbstractTest {
 
         mockServerClient.verify(HttpRequest.request().withMethod(HttpMethod.POST).withPath(N8N_WEBHOOK_PATH)
                 .withQueryStringParameter(N8N_WEBHOOK_QUERY_PARAM, N8N_WEBHOOK_QUERY_PARAM_VAL)
-                .withHeader("Authorization", "Bearer " + keycloakToken)
                 .withHeader(APM_HEADER_PARAM, apmPrincipalToken)
                 .withBody(JsonBody.json(decision(false, Map.of("ocx-key-1", "ocx-val-1")))));
+        mockServerClient.verify(HttpRequest.request().withMethod(HttpMethod.POST).withPath(N8N_WEBHOOK_PATH)
+                .withHeader("Authorization", "Bearer " + keycloakToken), VerificationTimes.exactly(0));
     }
 
     @Test
